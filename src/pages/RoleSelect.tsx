@@ -1,7 +1,8 @@
+import { Button, Typography } from 'antd';
 import React from 'react';
-import { Button, Space, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { Container } from './RoleSelect.styles';
+
+import { ButtonGroup, Container } from './RoleSelect.styles';
 
 const { Title } = Typography;
 
@@ -20,7 +21,7 @@ export default function RoleSelect() {
   return (
     <Container>
       <Title level={2}>Выберите вашу роль</Title>
-      <Space direction="vertical">
+      <ButtonGroup>
         <Button type="primary" onClick={() => handleSelect('client')}>
           Я Клиент
         </Button>
@@ -28,7 +29,7 @@ export default function RoleSelect() {
         <Button danger onClick={() => handleSelect('admin')}>
           Я Админ
         </Button>
-      </Space>
+      </ButtonGroup>
     </Container>
   );
 }
