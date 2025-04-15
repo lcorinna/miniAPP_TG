@@ -9,7 +9,9 @@ export default function Dashboard() {
   return (
     <div style={{ padding: 24 }}>
       <Title>Личный кабинет</Title>
-      <p>Вы вошли как: <strong>{role}</strong></p>
+      <p>
+        Вы вошли как: <strong>{role}</strong>
+      </p>
     </div>
   );
 }
