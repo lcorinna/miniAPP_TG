@@ -1,10 +1,10 @@
-import { Form, Input, Button, Typography, DatePicker, Select, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Button, DatePicker, Form, Input, message, Select, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { getUserProfile, saveUserProfile } from '../api/userService';
-import { Role } from '../types/user';
+import { EditProfileFormValues } from '../types/event';
 
 const { Title } = Typography;
 
@@ -26,7 +26,7 @@ export default function EditProfile() {
     role: profile.role,
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: EditProfileFormValues) => {
     const updated = {
       ...profile,
       fullName: values.fullName,

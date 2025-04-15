@@ -19,3 +19,11 @@ export interface CreateEventFormValues {
   type: 'online' | 'offline' | 'other';
   goal?: string;
 }
+
+export interface EditProfileFormValues {
+  fullName?: string;
+  phone: string;
+  email?: string;
+  birthDate: dayjs.Dayjs;
+  role: 'client' | 'influencer';
+}

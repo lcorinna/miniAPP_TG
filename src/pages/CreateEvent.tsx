@@ -1,7 +1,10 @@
-import { Button, DatePicker, Form, Input, InputNumber, message, Select, Typography } from 'antd';
+import { Button, DatePicker, Form, Input, message, Select, Typography } from 'antd';
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 
 import { createEvent } from '../api/events';
+import DecimalInput from '../components/DecimalInput';
+import { Wrapper } from '../styles/CreateEvent.styles';
 import { CreateEventFormValues, EventRequest } from '../types/event';
 
 const { Title } = Typography;
@@ -26,7 +29,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+    <Wrapper>
       <Title level={3}>Создание мероприятия</Title>
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item name="title" label="Название" rules={[{ required: true }]}>
@@ -38,11 +41,16 @@ export default function CreateEvent() {
         </Form.Item>
 
         <Form.Item name="date" label="Дата и время" rules={[{ required: true }]}>
-          <DatePicker showTime style={{ width: '100%' }} />
+          <DatePicker
+            style={{ width: '100%' }}
+            showTime={{ format: 'HH:mm' }}
+            disabledDate={(current) => current && current < dayjs().startOf('day')}
+            format="DD.MM.YYYY HH:mm"
+          />
         </Form.Item>
 
         <Form.Item name="budget" label="Бюджет (по желанию)">
-          <InputNumber style={{ width: '100%' }} min={0} prefix="₽" />
+          <DecimalInput />
         </Form.Item>
 
         <Form.Item name="type" label="Тип мероприятия" rules={[{ required: true }]}>
@@ -61,6 +69,6 @@ export default function CreateEvent() {
           Создать
         </Button>
       </Form>
-    </div>
+    </Wrapper>
   );
 }

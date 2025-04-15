@@ -1,8 +1,9 @@
 import { Button, Card, Descriptions, Typography } from 'antd';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getUserProfile, isProfileComplete } from '../api/userService';
+import { ButtonGroup, Wrapper } from '../styles/Dashboard.styles';
 
 const { Title } = Typography;
 
@@ -22,10 +23,10 @@ export default function Dashboard() {
     profile.fullName || `${profile.telegram.first_name} ${profile.telegram.last_name ?? ''}`;
 
   return (
-    <div style={{ maxWidth: 700, margin: '0 auto', padding: 20 }}>
+    <Wrapper>
       <Title level={2}>Добро пожаловать, {name}!</Title>
 
-      <Card title="Ваш профиль" style={{ marginBottom: 20 }}>
+      <Card title="Ваш профиль">
         <Descriptions bordered column={1}>
           <Descriptions.Item label="Телефон">{profile.phone}</Descriptions.Item>
           <Descriptions.Item label="Email">{profile.email || '—'}</Descriptions.Item>
@@ -39,14 +40,21 @@ export default function Dashboard() {
           </Descriptions.Item>
         </Descriptions>
 
-        <Button
-          type="primary"
-          style={{ marginTop: 20 }}
-          onClick={() => navigate('/edit-profile')}
-        >
-          Редактировать профиль
-        </Button>
+        <ButtonGroup>
+          <Button type="primary" onClick={() => navigate('/edit-profile')}>
+            Редактировать профиль
+          </Button>
+
+          {profile.role === 'client' && (
+            <>
+              <Button onClick={() => navigate('/my-events')}>Мои мероприятия</Button>
+              <Button type="dashed" onClick={() => navigate('/create-event')}>
+                Создать мероприятие
+              </Button>
+            </>
+          )}
+        </ButtonGroup>
       </Card>
-    </div>
+    </Wrapper>
   );
 }

@@ -1,5 +1,6 @@
+import { Button, Card, Descriptions, Divider, message, Typography } from 'antd';
 import React from 'react';
-import { Typography, Card, Descriptions, Divider, Button, message } from 'antd';
+
 import { getTelegramUser } from '../api/telegram';
 
 const { Title } = Typography;
