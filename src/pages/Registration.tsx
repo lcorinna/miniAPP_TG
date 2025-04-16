@@ -84,7 +84,7 @@ export default function Registration() {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" loading={loading} block>
-          Завершить регистрацию
+          Пройдите регистрацию
         </Button>
       </Form>
     </div>
