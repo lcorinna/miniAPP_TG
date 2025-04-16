@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import AdminPage from './pages/AdminPage';
+import AdminPanel from './pages/AdminPanel';
 import CreateEvent from './pages/CreateEvent';
-// import RoleSelect from './pages/RoleSelect'; //рудимент? кажется уже отказался
 import Dashboard from './pages/Dashboard';
 import EditEvent from './pages/EditEvent';
 import EditProfile from './pages/EditProfile';
@@ -19,11 +19,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to={role ? '/dashboard' : '/register'} />} />
-        {/* <Route path="/role-select" element={<RoleSelect />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/admin" element={isAdmin() ? <AdminPage /> : <Navigate to="/" />} />
+        <Route path="/admin/events" element={isAdmin() ? <AdminPanel /> : <Navigate to="/" />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/edit-event/:id" element={<EditEvent />} />

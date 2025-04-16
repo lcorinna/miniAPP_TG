@@ -1,19 +1,21 @@
 import { Button, Card, Descriptions, Divider, message, Typography } from 'antd';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { getTelegramUser } from '../api/telegram';
+import { ActionsGroup, Wrapper } from '../styles/AdminPage.styles';
 
 const { Title } = Typography;
 
 export default function AdminPage() {
   const user = getTelegramUser();
+  const navigate = useNavigate();
 
   const handleTestAction = () => {
     message.info('Это заглушка действия администратора');
   };
 
   return (
-    <div style={{ maxWidth: 700, margin: '0 auto', padding: 24 }}>
+    <Wrapper>
       <Title level={2}>Админ-панель</Title>
 
       <Card title="Информация о текущем пользователе">
@@ -29,10 +31,15 @@ export default function AdminPage() {
       <Divider />
 
       <Card title="Административные действия">
-        <Button type="primary" onClick={handleTestAction}>
-          Протестировать действие
-        </Button>
+        <ActionsGroup>
+          <Button type="primary" onClick={handleTestAction}>
+            Протестировать действие
+          </Button>
+          <Button type="primary" onClick={() => navigate('/admin/events')}>
+            Управление мероприятиями
+          </Button>
+        </ActionsGroup>
       </Card>
-    </div>
+    </Wrapper>
   );
 }
