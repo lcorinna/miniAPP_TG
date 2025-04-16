@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import AdminPage from './pages/AdminPage';
 import AdminPanel from './pages/AdminPanel';
+import AvailableEvents from './pages/AvailableEvents'; // импорт
 import CreateEvent from './pages/CreateEvent';
 import Dashboard from './pages/Dashboard';
 import EditEvent from './pages/EditEvent';
@@ -27,6 +28,7 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/edit-event/:id" element={<EditEvent />} />
+        <Route path="/available-events" element={<AvailableEvents />} />
       </Routes>
     </BrowserRouter>
   );

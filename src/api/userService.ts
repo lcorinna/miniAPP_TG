@@ -19,6 +19,24 @@ export const isProfileComplete = (): boolean => {
   return !!profile?.phone && !!profile?.birthDate && !!profile?.role;
 };
 
+const applicationKey = 'mock-applications';
+
+export type Application = {
+  eventId: string;
+  comment: string;
+  price: string;
+};
+
+export const saveApplication = (app: Application) => {
+  const data = JSON.parse(localStorage.getItem(applicationKey) || '[]');
+  data.push(app);
+  localStorage.setItem(applicationKey, JSON.stringify(data));
+};
+
+export const getApplications = (): Application[] => {
+  return JSON.parse(localStorage.getItem(applicationKey) || '[]');
+};
+
 // export const saveUserProfile = async (profile: UserProfile) => {
 //   await fetch('/api/user', {
 //     method: 'POST',

@@ -1,11 +1,21 @@
-import { Button, DatePicker, Input, message, Popconfirm, Select, Space, Table, Typography } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Input,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Table,
+  Typography,
+} from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteEvent, getAllEvents } from '../api/events';
-import { EventRequest } from '../types/event';
 import { Wrapper } from '../styles/AdminPanel.styles';
+import { EventRequest } from '../types/event';
 
 const { Title, Text } = Typography;
 
@@ -55,7 +65,8 @@ export default function AdminPanel() {
       title: 'Тип',
       dataIndex: 'type',
       key: 'type',
-      render: (type: string) => (type === 'online' ? 'Онлайн' : type === 'offline' ? 'Оффлайн' : 'Другое'),
+      render: (type: string) =>
+        type === 'online' ? 'Онлайн' : type === 'offline' ? 'Оффлайн' : 'Другое',
     },
     {
       title: 'Дата',
