@@ -2,8 +2,9 @@ import { Button, Card, Descriptions, Typography } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getApplications, getUserProfile, isProfileComplete } from '../api/userService';
+import { getUserProfile, isProfileComplete } from '../api/userService';
 import { ButtonGroup, Wrapper } from '../styles/Dashboard.styles';
+import { isAdmin } from '../utils/isAdmin';
 
 const { Title } = Typography;
 
@@ -21,8 +22,6 @@ export default function Dashboard() {
 
   const name =
     profile.fullName || `${profile.telegram.first_name} ${profile.telegram.last_name ?? ''}`;
-
-  const applications = getApplications();
 
   return (
     <Wrapper>
@@ -56,23 +55,13 @@ export default function Dashboard() {
             </>
           )}
 
-          {profile.role === 'influencer' && (
-            <Button onClick={() => navigate('/available-events')}>Доступные мероприятия</Button>
+          {isAdmin() && (
+            <Button onClick={() => navigate('/admin/events')} type="default">
+              Панель администратора
+            </Button>
           )}
         </ButtonGroup>
       </Card>
-
-      {profile.role === 'influencer' && applications.length > 0 && (
-        <Card title="Ваши отклики" style={{ marginTop: 20 }}>
-          <ul>
-            {applications.map((app, i) => (
-              <li key={i}>
-                <strong>{app.eventId}</strong> — ₽ {app.price}, комментарий: {app.comment}
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
     </Wrapper>
   );
 }

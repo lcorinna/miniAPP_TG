@@ -4,9 +4,9 @@ export type Role = 'client' | 'influencer';
 
 export interface TelegramUser {
   id: number;
-  username?: string;
   first_name: string;
   last_name?: string;
+  username?: string;
   photo_url?: string;
 }
 

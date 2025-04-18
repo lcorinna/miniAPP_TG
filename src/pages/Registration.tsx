@@ -1,10 +1,18 @@
+import 'dayjs/locale/ru';
+
 import { Button, DatePicker, Form, Input, message, Select, Typography } from 'antd';
-import { useState } from 'react';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getTelegramUser } from '../api/telegram';
 import { saveUserProfile } from '../api/userService';
+import { RegistrationWrapper } from '../styles/Registration.styles';
 import { RegistrationFormValues, UserProfile } from '../types/user';
+
+dayjs.locale('ru');
+dayjs.extend(customParseFormat);
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -12,23 +20,30 @@ const { Option } = Select;
 export default function Registration() {
   const [telegramUser, setTelegramUser] = useState(getTelegramUser());
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    form.setFieldsValue({
+      fullName: `${telegramUser.first_name} ${telegramUser.last_name ?? ''}`.trim(),
+    });
+  }, [form, telegramUser]);
+
   const onFinish = (values: RegistrationFormValues) => {
+    const birthDate = dayjs(values.birthDate, ['DD.MM.YYYY', 'DD.MM.YY'], true);
+    if (!birthDate.isValid()) {
+      message.error('Некорректный формат даты');
+      return;
+    }
+
     const profile: UserProfile = {
       telegram: telegramUser,
       phone: values.phone,
       email: values.email,
       fullName: values.fullName,
-      birthDate: values.birthDate.format('YYYY-MM-DD'),
+      birthDate: birthDate.format('YYYY-MM-DD'),
       role: values.role,
     };
-
-    // const age = dayjs().diff(profile.birthDate, 'year');
-    // if (age < 18) {
-    //   message.error('Регистрация доступна только пользователям 18+');
-    //   return;
-    // }
 
     saveUserProfile(profile);
     message.success('Профиль успешно создан!');
@@ -36,10 +51,10 @@ export default function Registration() {
   };
 
   return (
-    <div style={{ maxWidth: 480, margin: '0 auto', padding: 20 }}>
-      <Title level={2}>Завершите регистрацию</Title>
+    <RegistrationWrapper>
+      <Title level={2}>Пройдите регистрацию</Title>
 
-      <Form layout="vertical" onFinish={onFinish}>
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item label="Ваше имя из Telegram">
           <Input disabled value={`${telegramUser.first_name} ${telegramUser.last_name ?? ''}`} />
         </Form.Item>
@@ -55,7 +70,13 @@ export default function Registration() {
         <Form.Item
           name="phone"
           label="Номер телефона"
-          rules={[{ required: true, message: 'Введите номер телефона' }]}
+          rules={[
+            { required: true, message: 'Введите номер телефона' },
+            {
+              pattern: /^\+?[0-9]{9,15}$/,
+              message: 'Допускаются только цифры и знак "+" в начале',
+            },
+          ]}
         >
           <Input placeholder="+7..." />
         </Form.Item>
@@ -69,7 +90,12 @@ export default function Registration() {
           label="Дата рождения"
           rules={[{ required: true, message: 'Введите дату рождения' }]}
         >
-          <DatePicker format="YYYY-MM-DD" style={{ width: '100%' }} />
+          <DatePicker
+            format="DD.MM.YYYY"
+            inputReadOnly={false}
+            placeholder="дд.мм.гггг"
+            style={{ width: '100%' }}
+          />
         </Form.Item>
 
         <Form.Item
@@ -84,9 +110,9 @@ export default function Registration() {
         </Form.Item>
 
         <Button type="primary" htmlType="submit" loading={loading} block>
-          Пройдите регистрацию
+          Зарегистрироваться
         </Button>
       </Form>
-    </div>
+    </RegistrationWrapper>
   );
 }
